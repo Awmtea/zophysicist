@@ -1,0 +1,38 @@
+% !ZP title   = Solution --- Ball Thrown Upward
+% !ZP type    = solution
+% !ZP topic   = Kinematics
+% !ZP order   = 23
+% !ZP pair    = kin-02
+% !ZP summary = Worked solution using motion under gravity.
+% !ZP tags    = gravity
+
+\section*{Solution --- Ball Thrown Upward}
+
+Choose \textbf{upward as positive}. \quad
+\textbf{Given:} $u = 20\ \text{m/s}$, $a = -g = -9.8\ \text{m/s}^{2}$.
+
+\subsection*{Part 1 --- Maximum height}
+At the top $v = 0$. Use the equation without $t$:
+\begin{align}
+  v^{2} &= u^{2} + 2as \\
+  0     &= (20)^{2} + 2(-9.8)\,s \\
+  s     &= \frac{400}{19.6} \approx 20.4\ \text{m}
+\end{align}
+
+\subsection*{Part 2 --- Total time of flight}
+Time to reach the top ($v=0$):
+\begin{equation}
+  0 = 20 + (-9.8)\,t_{\text{up}}
+  \;\Rightarrow\;
+  t_{\text{up}} = \frac{20}{9.8} \approx 2.04\ \text{s}
+\end{equation}
+By symmetry the fall takes the same time, so
+\begin{equation}
+  t_{\text{total}} = 2\,t_{\text{up}} \approx 4.08\ \text{s}
+\end{equation}
+
+\subsection*{Check}
+Return velocity should be $-20\ \text{m/s}$:
+\begin{equation}
+  v = 20 + (-9.8)(4.08) \approx -20\ \text{m/s}\;\checkmark
+\end{equation}

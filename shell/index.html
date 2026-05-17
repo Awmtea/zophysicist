@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZoPhysicist · Physics Library for the Mizo Community</title>
+<meta name="description" content="ZoPhysicist — a free, open physics library for the Mizo community: lectures, definitions, problems and solutions.">
+<meta name="theme-color" content="#1F6F5C">
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- KaTeX (math rendering) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+
+<style>
+  :root{
+    --paper:#FBF7EC;
+    --paper-2:#F4EEDD;
+    --ink:#211E1A;
+    --ink-soft:#5C564C;
+    --line:#D9D0BA;
+    --accent:#1F6F5C;
+    --accent-deep:#13483C;
+    --accent-soft:#E4EFE9;
+    --gold:#B07A1E;
+    --bad:#9A3B2E;
+    --radius:14px;
+    --maxw:1180px;
+    --font-display:"Fraunces",Georgia,serif;
+    --font-body:"Newsreader",Georgia,serif;
+    --font-mono:"IBM Plex Mono",ui-monospace,monospace;
+  }
+  [data-theme="dark"]{
+    --paper:#16140F;
+    --paper-2:#1F1C16;
+    --ink:#EDE6D6;
+    --ink-soft:#A89F8C;
+    --line:#3A352B;
+    --accent:#5BBFA4;
+    --accent-deep:#9FE0CE;
+    --accent-soft:#1E2A26;
+    --gold:#D9A23E;
+    --bad:#E08673;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--font-body);
+    color:var(--ink);
+    font-size:18px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    background:var(--paper);
+    background-image:radial-gradient(140% 70% at 50% 0%,var(--paper-2),var(--paper) 62%);
+    background-attachment:fixed;
+    transition:background-color .25s,color .25s;
+  }
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline;text-underline-offset:3px}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;position:relative;z-index:1}
+
+  /* ---------- Header ---------- */
+  header.site{
+    border-bottom:2px solid var(--ink);
+    background:var(--paper);
+    position:sticky;top:0;z-index:50;
+  }
+  .topbar{display:flex;align-items:center;gap:20px;padding:16px 0}
+  .brand{display:flex;flex-direction:column;line-height:1.05;cursor:pointer}
+  .brand .b1{
+    font-family:var(--font-display);font-weight:600;font-size:1.55rem;
+    letter-spacing:-.02em;
+  }
+  .brand .b1 em{font-style:italic;color:var(--accent)}
+  .brand .b2{font-size:.78rem;color:var(--ink-soft);letter-spacing:.16em;text-transform:uppercase;margin-top:3px}
+  .grow{flex:1}
+  .searchbox{
+    position:relative;flex:0 1 360px;
+  }
+  .searchbox input{
+    width:100%;font-family:var(--font-body);font-size:.95rem;
+    padding:10px 14px 10px 38px;border:1.5px solid var(--line);
+    background:var(--paper-2);color:var(--ink);border-radius:999px;outline:none;
+  }
+  .searchbox input:focus{border-color:var(--accent)}
+  .searchbox svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:var(--ink-soft)}
+  .iconbtn{
+    border:1.5px solid var(--line);background:var(--paper-2);color:var(--ink);
+    width:40px;height:40px;border-radius:999px;cursor:pointer;font-size:.8rem;
+    font-family:var(--font-mono);display:grid;place-items:center;transition:.15s;
+  }
+  .iconbtn:hover{border-color:var(--accent);color:var(--accent)}
+  .langtoggle{
+    border:1.5px solid var(--ink);border-radius:999px;overflow:hidden;display:flex;
+    font-family:var(--font-mono);font-size:.74rem;
+  }
+  .langtoggle button{
+    border:0;background:transparent;color:var(--ink-soft);padding:9px 13px;cursor:pointer;letter-spacing:.05em;
+  }
+  .langtoggle button.on{background:var(--ink);color:var(--paper)}
+
+  .searchresults{
+    position:absolute;top:48px;left:0;right:0;background:var(--paper);
+    border:1.5px solid var(--ink);border-radius:12px;max-height:60vh;overflow:auto;
+    box-shadow:0 18px 40px -18px rgba(0,0,0,.4);display:none;
+  }
+  .searchresults.show{display:block}
+  .sr-item{padding:11px 16px;border-bottom:1px solid var(--line);cursor:pointer;display:flex;gap:10px;align-items:baseline}
+  .sr-item:last-child{border-bottom:0}
+  .sr-item:hover{background:var(--accent-soft)}
+  .sr-item .t{font-weight:600}
+  .sr-item .k{font-family:var(--font-mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;color:var(--paper);background:var(--accent);padding:2px 7px;border-radius:5px;flex:none}
+  .sr-empty{padding:18px 16px;color:var(--ink-soft);font-size:.92rem}
+
+  /* ---------- Layout ---------- */
+  .shell{display:grid;grid-template-columns:262px 1fr;gap:42px;padding:38px 0 90px;align-items:start}
+  nav.side{position:sticky;top:90px;font-size:.95rem}
+  .side h4{
+    font-family:var(--font-mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--ink-soft);margin:22px 0 9px;padding-bottom:6px;border-bottom:1px solid var(--line);
+  }
+  .side h4:first-child{margin-top:0}
+  .side a{
+    display:flex;justify-content:space-between;align-items:center;gap:8px;
+    color:var(--ink);padding:6px 10px;border-radius:8px;border-left:2px solid transparent;
+  }
+  .side a:hover{background:var(--paper-2);text-decoration:none}
+  .side a.active{background:var(--accent-soft);border-left-color:var(--accent);color:var(--accent-deep);font-weight:600}
+  .side a .ct{font-family:var(--font-mono);font-size:.7rem;color:var(--ink-soft)}
+  .side a.active .ct{color:var(--accent)}
+
+  main{min-width:0}
+
+  /* ---------- Home ---------- */
+  .hero{padding:14px 0 30px;border-bottom:2px solid var(--ink);margin-bottom:36px}
+  .hero .kick{font-family:var(--font-mono);font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+  .hero h1{
+    font-family:var(--font-display);font-weight:600;font-size:clamp(2.4rem,5.5vw,3.9rem);
+    line-height:1.04;letter-spacing:-.025em;max-width:14ch;
+  }
+  .hero h1 em{font-style:italic;color:var(--accent)}
+  .hero p{font-size:1.12rem;color:var(--ink-soft);max-width:56ch;margin-top:18px}
+  .stats{display:flex;gap:34px;margin-top:26px;flex-wrap:wrap}
+  .stat .n{font-family:var(--font-display);font-size:2rem;font-weight:600;color:var(--accent)}
+  .stat .l{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+
+  .secthead{display:flex;align-items:baseline;gap:14px;margin:46px 0 20px}
+  .secthead h2{font-family:var(--font-display);font-size:1.7rem;font-weight:600;letter-spacing:-.02em}
+  .secthead .rule{flex:1;height:1px;background:var(--line)}
+
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:18px}
+  .card{
+    border:1.5px solid var(--line);background:var(--paper);border-radius:var(--radius);
+    padding:20px;cursor:pointer;transition:.16s;position:relative;overflow:hidden;
+  }
+  .card::after{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent);transform:scaleY(0);transform-origin:top;transition:.2s}
+  .card:hover{border-color:var(--ink);transform:translateY(-3px)}
+  .card:hover::after{transform:scaleY(1)}
+  .card .tag{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+  .card h3{font-family:var(--font-display);font-size:1.22rem;font-weight:600;margin:9px 0 6px;letter-spacing:-.01em}
+  .card p{font-size:.92rem;color:var(--ink-soft)}
+  .card .meta{margin-top:14px;font-family:var(--font-mono);font-size:.7rem;color:var(--ink-soft);display:flex;gap:8px;align-items:center}
+  .pill{font-family:var(--font-mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;padding:3px 8px;border-radius:6px;border:1px solid var(--line);color:var(--ink-soft)}
+  .pill.lecture{color:var(--accent);border-color:var(--accent)}
+  .pill.definition{color:var(--gold);border-color:var(--gold)}
+  .pill.problem{color:var(--bad);border-color:var(--bad)}
+  .pill.solution{color:var(--accent-deep);border-color:var(--accent-deep)}
+
+  /* ---------- Article ---------- */
+  article{max-width:760px}
+  .crumbs{font-family:var(--font-mono);font-size:.76rem;color:var(--ink-soft);margin-bottom:18px}
+  .crumbs a{color:var(--ink-soft)}
+  .crumbs span{color:var(--accent)}
+  .doc h1{font-family:var(--font-display);font-size:clamp(2rem,4vw,2.8rem);font-weight:600;line-height:1.1;letter-spacing:-.025em;margin:6px 0 10px}
+  .doc h2{font-family:var(--font-display);font-size:1.55rem;font-weight:600;margin:38px 0 12px;padding-top:10px;border-top:1px solid var(--line)}
+  .doc h3{font-family:var(--font-display);font-size:1.22rem;font-weight:600;margin:26px 0 8px}
+  .doc p{margin:14px 0}
+  .doc ul,.doc ol{margin:14px 0 14px 26px}
+  .doc li{margin:6px 0}
+  .doc strong{font-weight:600}
+  .doc blockquote{border-left:3px solid var(--accent);background:var(--accent-soft);padding:14px 20px;margin:20px 0;border-radius:0 10px 10px 0;color:var(--ink)}
+  .doc code{font-family:var(--font-mono);font-size:.86em;background:var(--paper-2);padding:2px 6px;border-radius:5px}
+  .doc pre{background:var(--paper-2);border:1px solid var(--line);border-radius:10px;padding:16px;overflow:auto;margin:18px 0}
+  .doc pre code{background:none;padding:0}
+  .doc hr{border:0;border-top:1px solid var(--line);margin:30px 0}
+  .doc table{border-collapse:collapse;width:100%;margin:20px 0;font-size:.95rem}
+  .doc th,.doc td{border:1px solid var(--line);padding:9px 12px;text-align:left}
+  .doc th{background:var(--paper-2);font-weight:600}
+  .doc img{max-width:100%;border-radius:10px;border:1px solid var(--line)}
+  .katex{font-size:1.06em}
+  .katex-display{overflow-x:auto;overflow-y:hidden;padding:6px 0}
+
+  .docfoot{margin-top:46px;border-top:2px solid var(--ink);padding-top:20px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .btn{
+    font-family:var(--font-mono);font-size:.8rem;letter-spacing:.04em;
+    border:1.5px solid var(--ink);background:transparent;color:var(--ink);
+    padding:11px 18px;border-radius:999px;cursor:pointer;transition:.15s;text-decoration:none;display:inline-block;
+  }
+  .btn:hover{background:var(--ink);color:var(--paper);text-decoration:none}
+  .btn.solve{border-color:var(--accent);color:var(--accent)}
+  .btn.solve:hover{background:var(--accent);color:var(--paper)}
+
+  .notice{
+    border:1.5px dashed var(--gold);border-radius:10px;background:var(--paper-2);
+    padding:14px 18px;margin:22px 0;font-size:.92rem;color:var(--ink-soft);
+  }
+  .notice b{color:var(--gold)}
+
+  footer.site{border-top:2px solid var(--ink);padding:30px 0;font-size:.86rem;color:var(--ink-soft)}
+  footer.site .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .loading{padding:60px 0;text-align:center;color:var(--ink-soft);font-family:var(--font-mono);font-size:.85rem;letter-spacing:.1em}
+
+  @media(max-width:880px){
+    body{font-size:17px}
+    .shell{grid-template-columns:1fr;gap:0}
+    nav.side{position:static;border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:20px;
+      display:grid;grid-template-columns:1fr 1fr;gap:0 24px}
+    nav.side.collapsed{display:none}
+    .side h4{margin-top:14px}
+    .searchbox{flex:1}
+    .brand .b2{display:none}
+    .menutoggle{display:grid}
+  }
+  @media(min-width:881px){.menutoggle{display:none}}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap topbar">
+    <div class="brand" onclick="go('#/')">
+      <span class="b1"><em>Zo</em>Physicist</span>
+      <span class="b2" data-i="tagline">Mizo Community Library</span>
+    </div>
+    <div class="grow"></div>
+    <div class="searchbox">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="q" type="text" autocomplete="off" data-iph="search" placeholder="Search lessons, definitions…">
+      <div id="sr" class="searchresults"></div>
+    </div>
+    <div class="langtoggle" role="group" aria-label="Language">
+      <button id="lang-en" class="on" onclick="setLang('en')">EN</button>
+      <button id="lang-lus" onclick="setLang('lus')">MIZO</button>
+    </div>
+    <button class="iconbtn" id="themebtn" title="Toggle theme" onclick="toggleTheme()">◐</button>
+    <button class="iconbtn menutoggle" title="Menu" onclick="document.querySelector('nav.side').classList.toggle('collapsed')">≡</button>
+  </div>
+</header>
+
+<div class="wrap shell">
+  <nav class="side collapsed" id="sidenav"></nav>
+  <main id="main"><div class="loading">LOADING LIBRARY…</div></main>
+</div>
+
+<footer class="site">
+  <div class="wrap">
+    <span data-i="footer_left">An open, free physics library for the Mizo community.</span>
+    <span>Static site · Built to run on free hosting</span>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   ZoPhysicist — static physics library
+   No backend. Content = Markdown files listed in content/manifest.json
+   ============================================================ */
+
+const State = { manifest:null, i18n:null, lang:'en', entryCache:{} };
+
+/* ---------- helpers ---------- */
+const $  = (s,r=document)=>r.querySelector(s);
+const $$ = (s,r=document)=>[...r.querySelectorAll(s)];
+function go(hash){ if(location.hash===hash){route();} else location.hash=hash; }
+function tt(key){ // translated UI string
+  const o=State.i18n||{}; return (o[State.lang]&&o[State.lang][key]) || (o.en&&o.en[key]) || key;
+}
+function field(obj,base){ // pick localized field e.g. title_en / title_lus
+  return obj[base+'_'+State.lang] || obj[base+'_en'] || obj[base] || '';
+}
+function escapeHTML(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+/* ---------- boot ---------- */
+async function boot(){
+  try{
+    const [m,i]=await Promise.all([
+      fetch('content/manifest.json').then(r=>r.json()),
+      fetch('i18n.json').then(r=>r.json())
+    ]);
+    State.manifest=m; State.i18n=i;
+    State.lang = localStorage.getItem('lang')||'en';
+    const th = localStorage.getItem('theme'); if(th) document.documentElement.dataset.theme=th;
+    applyLang(); buildSidebar(); wireSearch();
+    window.addEventListener('hashchange',route);
+    route();
+  }catch(e){
+    $('#main').innerHTML='<div class="loading">Could not load content/manifest.json or i18n.json.<br>Make sure the whole folder was uploaded.</div>';
+    console.error(e);
+  }
+}
+
+/* ---------- language & theme ---------- */
+function setLang(l){ State.lang=l; localStorage.setItem('lang',l); applyLang(); buildSidebar(); route(); }
+function applyLang(){
+  document.documentElement.lang = State.lang==='lus'?'lus':'en';
+  $('#lang-en').classList.toggle('on',State.lang==='en');
+  $('#lang-lus').classList.toggle('on',State.lang==='lus');
+  $$('[data-i]').forEach(el=>el.textContent=tt(el.dataset.i));
+  $$('[data-iph]').forEach(el=>el.placeholder=tt(el.dataset.iph));
+}
+function toggleTheme(){
+  const d=document.documentElement;
+  d.dataset.theme = d.dataset.theme==='dark'?'':'dark';
+  localStorage.setItem('theme',d.dataset.theme);
+}
+
+/* ---------- sidebar ---------- */
+function buildSidebar(){
+  const topics=[...State.manifest.topics].sort((a,b)=>(a.order||0)-(b.order||0));
+  const types=[
+    {k:'lecture',  i:'nav_lectures'},
+    {k:'definition',i:'nav_definitions'},
+    {k:'problem',  i:'nav_problems'},
+    {k:'solution', i:'nav_solutions'},
+  ];
+  let h=`<h4>${tt('nav_topics')}</h4>`;
+  topics.forEach(t=>{
+    const n=State.manifest.entries.filter(e=>e.topic===t.id).length;
+    h+=`<a href="#/topic/${t.id}" data-h="#/topic/${t.id}">${escapeHTML(field(t,'title'))}<span class="ct">${n}</span></a>`;
+  });
+  h+=`<h4>${tt('nav_browse')}</h4>`;
+  types.forEach(ty=>{
+    const n=State.manifest.entries.filter(e=>e.type===ty.k).length;
+    h+=`<a href="#/type/${ty.k}" data-h="#/type/${ty.k}">${tt(ty.i)}<span class="ct">${n}</span></a>`;
+  });
+  $('#sidenav').innerHTML=h;
+}
+function markActive(){
+  $$('#sidenav a').forEach(a=>a.classList.toggle('active',a.dataset.h===location.hash));
+}
+
+/* ---------- router ---------- */
+function route(){
+  const hash=location.hash||'#/';
+  window.scrollTo(0,0);
+  const parts=hash.replace(/^#\//,'').split('/').filter(Boolean);
+  if(parts.length===0)              renderHome();
+  else if(parts[0]==='topic')       renderList('topic',parts[1]);
+  else if(parts[0]==='type')        renderList('type',parts[1]);
+  else if(parts[0]==='entry')       renderEntry(parts[1]);
+  else                              renderHome();
+  markActive();
+  $('#sidenav').classList.add('collapsed');
+}
+
+/* ---------- views ---------- */
+function cardHTML(e){
+  const t=State.manifest.topics.find(x=>x.id===e.topic);
+  return `<div class="card" onclick="go('#/entry/${e.id}')">
+    <div class="tag">${t?escapeHTML(field(t,'title')):''}</div>
+    <h3>${escapeHTML(field(e,'title'))}</h3>
+    <p>${escapeHTML(field(e,'summary')||'')}</p>
+    <div class="meta"><span class="pill ${e.type}">${tt('type_'+e.type)}</span></div>
+  </div>`;
+}
+
+function renderHome(){
+  const m=State.manifest;
+  const n=k=>m.entries.filter(e=>e.type===k).length;
+  const recent=[...m.entries].slice(-6).reverse();
+  const topics=[...m.topics].sort((a,b)=>(a.order||0)-(b.order||0));
+  $('#main').innerHTML=`
+   <section class="hero">
+     <div class="kick">${tt('hero_kick')}</div>
+     <h1>${tt('hero_title_a')} <em>${tt('hero_title_b')}</em></h1>
+     <p>${tt('hero_sub')}</p>
+     <div class="stats">
+       <div class="stat"><div class="n">${m.entries.length}</div><div class="l">${tt('nav_browse')}</div></div>
+       <div class="stat"><div class="n">${n('lecture')}</div><div class="l">${tt('nav_lectures')}</div></div>
+       <div class="stat"><div class="n">${n('definition')}</div><div class="l">${tt('nav_definitions')}</div></div>
+       <div class="stat"><div class="n">${n('problem')}</div><div class="l">${tt('nav_problems')}</div></div>
+     </div>
+   </section>
+   <div class="secthead"><h2>${tt('home_topics')}</h2><div class="rule"></div></div>
+   <div class="cards">${topics.map(t=>{
+      const c=m.entries.filter(e=>e.topic===t.id).length;
+      return `<div class="card" onclick="go('#/topic/${t.id}')">
+        <div class="tag">${tt('nav_topics')}</div>
+        <h3>${escapeHTML(field(t,'title'))}</h3>
+        <p>${escapeHTML(field(t,'desc')||'')}</p>
+        <div class="meta">${c} ${tt('items')}</div></div>`;
+   }).join('')}</div>
+   <div class="secthead"><h2>${tt('home_recent')}</h2><div class="rule"></div></div>
+   <div class="cards">${recent.map(cardHTML).join('')||('<p>'+tt('empty')+'</p>')}</div>`;
+}
+
+function renderList(kind,key){
+  const m=State.manifest; let items,title;
+  if(kind==='topic'){
+    const t=m.topics.find(x=>x.id===key);
+    title=t?field(t,'title'):key;
+    items=m.entries.filter(e=>e.topic===key);
+  }else{
+    title=tt('type_'+key)+'s'; items=m.entries.filter(e=>e.type===key);
+  }
+  items=[...items].sort((a,b)=>(a.order||0)-(b.order||0));
+  $('#main').innerHTML=`
+   <div class="crumbs"><a onclick="go('#/')">${tt('home')}</a> / <span>${escapeHTML(title)}</span></div>
+   <div class="secthead"><h2>${escapeHTML(title)}</h2><div class="rule"></div></div>
+   <div class="cards">${items.map(cardHTML).join('')||('<p>'+tt('empty')+'</p>')}</div>`;
+}
+
+/* Content is pre-rendered to HTML fragments by the build step (Pandoc).
+   Each entry has `file` (English) and optionally `file_lus` (Mizo). */
+async function loadFragment(e){
+  const want = (State.lang==='lus' && e.file_lus) ? e.file_lus : e.file;
+  if(State.entryCache[want]) return State.entryCache[want];
+  const html=await fetch('content/'+want).then(r=>{if(!r.ok)throw 0;return r.text();});
+  State.entryCache[want]=html; return html;
+}
+
+async function renderEntry(id){
+  const e=State.manifest.entries.find(x=>x.id===id);
+  if(!e){ $('#main').innerHTML=`<p>${tt('empty')}</p>`; return; }
+  const t=State.manifest.topics.find(x=>x.id===e.topic);
+  $('#main').innerHTML=`<div class="loading">…</div>`;
+  let body='';
+  try{ body=await loadFragment(e); }
+  catch(_){ body=`<div class="notice"><b>Missing file:</b> content/${escapeHTML(e.file)}</div>`; }
+
+  const sol = e.type==='problem' && e.solution
+    ? `<a class="btn solve" onclick="go('#/entry/${e.solution}')">${tt('view_solution')} →</a>` : '';
+  const back = e.type==='solution' && e.problem
+    ? `<a class="btn" onclick="go('#/entry/${e.problem}')">← ${tt('back_problem')}</a>` : '';
+
+  $('#main').innerHTML=`
+   <article>
+     <div class="crumbs">
+       <a onclick="go('#/')">${tt('home')}</a> /
+       <a onclick="go('#/topic/${e.topic}')">${t?escapeHTML(field(t,'title')):''}</a> /
+       <span>${tt('type_'+e.type)}</span>
+     </div>
+     <div class="doc">${body}</div>
+     <div class="docfoot">
+       <div>${back||`<a class="btn" onclick="go('#/topic/${e.topic}')">← ${tt('back_topic')}</a>`}</div>
+       <div>${sol}</div>
+     </div>
+   </article>`;
+  if(window.renderMathInElement){
+    renderMathInElement($('.doc'),{
+      delimiters:[
+        {left:'$$',right:'$$',display:true},
+        {left:'$',right:'$',display:false},
+        {left:'\\[',right:'\\]',display:true},
+        {left:'\\(',right:'\\)',display:false}
+      ],
+      throwOnError:false
+    });
+  }
+}
+
+/* ---------- search (metadata: title, summary, tags, topic, type) ---------- */
+function wireSearch(){
+  const q=$('#q'), box=$('#sr');
+  const close=()=>box.classList.remove('show');
+  q.addEventListener('input',()=>{
+    const v=q.value.trim().toLowerCase();
+    if(!v){close();return;}
+    const hits=State.manifest.entries.map(e=>{
+      const t=State.manifest.topics.find(x=>x.id===e.topic);
+      const hay=[field(e,'title'),field(e,'summary'),(e.tags||[]).join(' '),
+                 t?field(t,'title'):'',tt('type_'+e.type)].join(' ').toLowerCase();
+      return hay.includes(v)?e:null;
+    }).filter(Boolean).slice(0,12);
+    box.innerHTML = hits.length
+      ? hits.map(e=>`<div class="sr-item" onclick="go('#/entry/${e.id}');document.getElementById('sr').classList.remove('show');document.getElementById('q').value=''">
+          <span class="k">${tt('type_'+e.type)}</span><span class="t">${escapeHTML(field(e,'title'))}</span></div>`).join('')
+      : `<div class="sr-empty">${tt('no_results')}</div>`;
+    box.classList.add('show');
+  });
+  document.addEventListener('click',ev=>{ if(!ev.target.closest('.searchbox')) close(); });
+}
+
+boot();
+</script>
+</body>
+</html>

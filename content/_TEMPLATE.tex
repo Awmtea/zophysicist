@@ -1,0 +1,61 @@
+% ============================================================
+%  ZoPhysicist content file.
+%  To add a new lesson: copy this file, rename it (e.g. waves-intro.tex),
+%  fill in the header below, write your LaTeX after the header, commit.
+%  The site rebuilds and deploys itself automatically.
+% ============================================================
+%
+%  HEADER  (every line starts with  % !ZP  — keep that exactly)
+%
+% !ZP title   = Put the lesson title here
+% !ZP type    = lecture
+% !ZP topic   = Kinematics
+% !ZP summary = One short sentence shown on the card.
+% !ZP tags    = motion, example
+% !ZP order   = 10
+%
+%  FIELD GUIDE
+%   title   (required)  Shown as the page heading and in search.
+%   type    (required)  One of:  lecture | definition | problem | solution
+%   topic   (required)  ANY text. Typing a new topic name automatically
+%                       creates that section in the site navigation.
+%   summary (optional)  Short blurb on the browse card.
+%   tags    (optional)  Comma-separated, used by search.
+%   order   (optional)  Number for sorting within a topic (low = first).
+%   pair    (optional)  Link a problem and its solution: give BOTH the
+%                       problem file and the solution file the SAME pair
+%                       value, e.g.  % !ZP pair = kin-01
+%   topicorder (optional) Number controlling where the topic itself sits
+%                       in the sidebar (put it on any one file of the topic).
+%
+%  Mizo version (optional): anywhere in the body, put a line that is exactly
+%       %%% MIZO %%%
+%  Everything ABOVE it is English; everything BELOW it is the Mizo version.
+%  The site's EN/MIZO switch then shows the right one. Omit it for English-only.
+%
+% ------------------------------------------------------------
+%  YOUR LATEX STARTS BELOW. Write normally. A preamble /
+%  \documentclass is optional — body-only is fine.
+% ------------------------------------------------------------
+
+\section*{Put the lesson title here}
+
+Write your explanation in normal LaTeX. Inline maths like $E = mc^{2}$ and
+displayed maths both work:
+
+\begin{equation}
+  v^{2} = u^{2} + 2 a s
+\end{equation}
+
+\begin{itemize}
+  \item Lists work.
+  \item \textbf{Bold} and \emph{italic} work.
+\end{itemize}
+
+Tables, \texttt{align} environments, blockquotes and so on are all supported.
+
+%%% MIZO %%%
+
+\section*{Mizo title (optional)}
+
+Mizo version goes here. Equations need no translation.
