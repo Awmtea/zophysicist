@@ -1,0 +1,35 @@
+{
+  "_README": "All interface text for ZoPhysicist, in Mizo. Edit any value here and re-deploy; nothing else needs changing. Numbers are placed AFTER the word where shown (Mizo lexicography), e.g. 'Chhawpchhuah zât 12'.",
+
+  "tagline":        "Mizo Zirlaite Tâna Zirlai Dahkhâwmna",
+  "footer":         "Mitin tân, a thlâwnin physics thu leh hla dahkhâwmna",
+
+  "nav_topics":     "Thupui",
+  "nav_browse":     "Thu hlâwm zawnna",
+  "nav_lectures":   "Zirtîrna",
+  "nav_definitions":"Awmzia",
+  "nav_problems":   "Zawhna",
+  "nav_solutions":  "Chhânna",
+  "home":           "Inpui",
+  "about":          "Keimahni",
+
+  "type_lecture":   "Zirtîrna",
+  "type_definition":"Awmzia",
+  "type_problem":   "Zawhna",
+  "type_solution":  "Chhânna",
+
+  "view_solution":  "Chhânna enna",
+  "back_problem":   "Zawhnaa lêtna",
+  "back_topic":     "Thupuia lêtna",
+
+  "search":         "Zirtîrna emaw, thu ziak hrang hrang zawnna",
+  "no_results":     "A milpui hmuh a ni lo",
+  "empty":          "Engmah a la awm rih lo",
+
+  "kicker":         "Kan hawng ta · A thlâwnin · Zofate tân",
+  "hero_title":     "Mi tin chhiar theihin Physics Mizo ṭawng ngeiin",
+  "hero_sub":       "Tih len leh tih changtlun zêl tûr, physics leh zirlai ṭhenkhat dahkhâwmna hmun, zirtîrna leh zawhna leh chhâna tinrêng awmna hmun a ni e",
+  "home_topics":    "Thupui hlâwm zawnna",
+  "home_recent":    "Nichin lawka chhawpchhuah thar",
+  "items":          "Chhawpchhuah zât"
+}
